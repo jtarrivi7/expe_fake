@@ -17,39 +17,15 @@ import time
 
 os.chdir('D:/Escritorio/phd/experiments/codi_expe')
 #==============================================================================
-#===================GENERO SEQÜENCIA EXPERIMENTAL==============================
+#===================GENERO SEQÜENCIES EXPERIMENTALS============================
 #==============================================================================
 
+#==========================SEQ PRESENTACIÓ OLORS===============================
 
-#=================CODI JOAN==============================
-# num_trials = 10
-# chunk = num_trials//5 #per a que el codi funcioni el num d'expes ha de ser multiple de 5
-# seq_expe = []
-# resp_suje = []
-
-# for x in range(num_trials):
-#     seq_expe.append(0)
-#     resp_suje.append(0)
-# for i in range(num_trials):
-#     if i < chunk:
-#         seq_expe[i]= 1 
-#     elif i < chunk *2:
-#         seq_expe[i]= 2
-#     elif i < chunk *3:
-#         seq_expe[i]= 3
-#     elif i < chunk *4:
-#         seq_expe[i]= 4
-#     elif i < chunk *5:
-#         seq_expe[i]= 5
-
-# random.shuffle(seq_expe)  
-
-
-#=================CODI MANEL==============================
-nensayos=10  #40 ensayos x 3 valvulas 120
-repes=2
-valvulas=5
-valv_l=['a','b','c','d','e'] #nombres valvulas
+nensayos=12  #40 ensayos x 3 valvulas 120
+repes=4
+valvulas=3
+valv_l=['a','b','c']#nombres valvulas
 
 
 SECR=[0 for i in range(nensayos)] #array 1d almacena secuencia random presentacion
@@ -77,6 +53,42 @@ for x in range(nensayos):
     SECEXR[x]=SECEX[SECR[x]]   
 
 contae=-1
+
+
+#=====================SEQ PRESENTACIÓ IMATGES ANIMALS==========================
+
+#funció per generar sequencies experimentals
+
+def seq_generator(nensayos):
+
+    SECEX=[]
+    aux1=[]
+
+    for x in range(nensayos):
+        SECEX.append(0)
+        aux1.append(0)
+    
+    for x in range(nensayos):
+        cont=0
+        while (cont < 1 ):
+            num1= random.randint(0, nensayos-1);
+            if aux1[num1] < 1:
+                aux1[num1]=1
+                SECEX[x]=num1
+                cont=cont+1
+    return SECEX
+
+def fix_seq(seq):
+    for i in range(len(seq)):
+        seq[i] += 1
+        
+seq_animals = seq_generator(repes)
+seq_animals = fix_seq(seq_animals)
+#=====================SEQ PRESENTACIÓ IMATGES OBJECTES=========================
+seq_obj = seq_generator(repes)
+seq_obj = fix_seq(seq_obj)
+
+
 #===================GENERO WINDOW I CARREGO IMATGES============================
 window = pyglet.window.Window(720, 700)
 
