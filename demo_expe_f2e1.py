@@ -9,13 +9,10 @@ Created on Mon Sep 14 09:52:44 2020
 import pyglet
 from pyglet.window import key
 import random
-import csv
-from itertools import zip_longest
-
 import os
 import time
 
-os.chdir('D:/Escritorio/phd/experiments/codi_expe')
+os.chdir('D:/Escritorio/phd/codi_experiments/expe_fake_pyglet')
 #==============================================================================
 #===================GENERO SEQÜENCIES EXPERIMENTALS============================
 #==============================================================================
@@ -93,15 +90,13 @@ seq_obj = fix_seq(seq_obj)
 window = pyglet.window.Window(720, 700)
 
 dict_imatges ={
-    'image_inst': pyglet.resource.image('inst.jpg'),
     'image_ini' : pyglet.resource.image('img_ini.jpg'),
-    'image_fin' : pyglet.resource.image('img_fin.jpg'),
-    'image_void' : pyglet.resource.image('void.jpg'),
+    'image_inst': pyglet.resource.image('inst.jpg'),
+    'image_fix': pyglet.resource.image('p_fijac.jpg'),
     'image_valora' : pyglet.resource.image('valora.jpg'),
-    'valvula1' : pyglet.resource.image('sakuragi.jpg'),
-    'valvula2' : pyglet.resource.image('greatshark.png'),
-    'valvula3' : pyglet.resource.image('olfactometre.jpg'),
-    'valvula4' : pyglet.resource.image('image4.png') 
+    'image_void' : pyglet.resource.image('void.jpg'),
+    'image_blink' : pyglet.resource.image('blink.jpg'),
+    'image_fin' : pyglet.resource.image('img_fin.jpg')
     }
 
    
