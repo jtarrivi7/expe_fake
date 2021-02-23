@@ -12,7 +12,7 @@ import random
 import os
 import time
 
-os.chdir('D:/Escritorio/phd/codi_experiments/expe_fake_pyglet')
+os.chdir('D:/Escritorio/phd/codi_experiments/expe_fake_pyglet') #directori on tenim el projecte.Les imatges estaran en subdirectoris.
 #==============================================================================
 #===================GENERO SEQÜENCIES EXPERIMENTALS============================
 #==============================================================================
@@ -81,16 +81,22 @@ def fix_seq(seq):
         
 seq_animals = seq_generator(repes)
 seq_animals = fix_seq(seq_animals)
+
 #=====================SEQ PRESENTACIÓ IMATGES OBJECTES=========================
+
 seq_obj = seq_generator(repes)
 seq_obj = fix_seq(seq_obj)
 
 
+
+
+#==============================================================================
 #===================GENERO WINDOW I CARREGO IMATGES============================
+#==============================================================================
 window = pyglet.window.Window(720, 700)
 
 dict_imatges ={
-    'image_ini' : pyglet.resource.image('imatges_manel_finals/others/img_ini.jpg'),
+    'image_ini' : pyglet.resource.image('imatges_manel_finals/others/img_ini.jpg'), 
     'image_inst': pyglet.resource.image('imatges_manel_finals/others/inst.jpg'),
     'image_fix': pyglet.resource.image('imatges_manel_finals/others/p_fijac.jpg'),
     'image_valora' : pyglet.resource.image('imatges_manel_finals/others/valora.jpg'),
