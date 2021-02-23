@@ -90,13 +90,13 @@ seq_obj = fix_seq(seq_obj)
 window = pyglet.window.Window(720, 700)
 
 dict_imatges ={
-    'image_ini' : pyglet.resource.image('img_ini.jpg'),
-    'image_inst': pyglet.resource.image('inst.jpg'),
-    'image_fix': pyglet.resource.image('p_fijac.jpg'),
-    'image_valora' : pyglet.resource.image('valora.jpg'),
-    'image_void' : pyglet.resource.image('void.jpg'),
-    'image_blink' : pyglet.resource.image('blink.jpg'),
-    'image_fin' : pyglet.resource.image('img_fin.jpg')
+    'image_ini' : pyglet.resource.image('imatges_manel_finals/others/img_ini.jpg'),
+    'image_inst': pyglet.resource.image('imatges_manel_finals/others/inst.jpg'),
+    'image_fix': pyglet.resource.image('imatges_manel_finals/others/p_fijac.jpg'),
+    'image_valora' : pyglet.resource.image('imatges_manel_finals/others/valora.jpg'),
+    'image_void' : pyglet.resource.image('imatges_manel_finals/others/void.jpg'),
+    'image_blink' : pyglet.resource.image('imatges_manel_finals/others/blink.jpg'),
+    'image_fin' : pyglet.resource.image('imatges_manel_finals/others/img_fin.jpg')
     }
 
    
