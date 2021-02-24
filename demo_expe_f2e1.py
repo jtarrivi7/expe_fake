@@ -137,14 +137,18 @@ def update(dt):
 @window.event
 def on_draw():
     window.clear()
-    global inici_exp
+    global inici_exp, dt2
     
     if inici_exp == -1:
         dict_imatges['image_inst'].blit(0, 0)
     elif inici_exp == 0:
-        dict_imatges['image_ini'].blit(0, 0)    
+        dict_imatges['image_ini'].blit(0, 0)
     elif inici_exp == 1:
-        dict_imatges['image_fix'].blit(0, 0)      
+        if dt2 < 4:
+            dict_imatges['image_fix'].blit(0, 0)         
+        elif dt2 >= 4:
+            dict_imatges['image_void'].blit(0, 0)      
+            
         
     # elif inici_exp == 1 and contador_seq <= nensayos-1:
     #      if dt2 <= 5:   
@@ -160,12 +164,12 @@ def on_draw():
 
 @window.event
 def on_key_press(symbol, modifiers):
-    global inici_exp
+    global inici_exp, dt2
     if symbol == key.SPACE and inici_exp == -1:
         inici_exp = 0
     elif symbol == key.SPACE and inici_exp == 0:
         inici_exp = 1
-
+        dt2 = 0
 
 
 pyglet.clock.schedule_interval(update, 1/60.0)            
