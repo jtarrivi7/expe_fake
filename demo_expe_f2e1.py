@@ -13,6 +13,7 @@ import os
 import time
 
 os.chdir('D:/Escritorio/phd/codi_experiments/expe_fake_pyglet') #directori on tenim el projecte.Les imatges estaran en subdirectoris.
+
 #==============================================================================
 #===================GENERO SEQÜENCIES EXPERIMENTALS============================
 #==============================================================================
@@ -25,9 +26,9 @@ valvulas=3
 valv_l=['a','b','c']#nombres valvulas
 
 
-SECR=[0 for i in range(nensayos)] #array 1d almacena secuencia random presentacion
-SECEX = [[] * 3 for i in range(nensayos)] #array 2d para almacenar trials
-SECEXR = [[] * 3 for i in range(nensayos)] #array 2d para almacenar serie aleatoria
+secr=[0 for i in range(nensayos)] #array 1d almacena secuencia random presentacion
+secex = [[] * 3 for i in range(nensayos)] #array 2d para almacenar trials
+secexr = [[] * 3 for i in range(nensayos)] #array 2d para almacenar serie aleatoria
 aux1=[0 for i in range(nensayos)]
 
 ## Genera serie aleatoria para presentación
@@ -37,19 +38,18 @@ for x in range(nensayos):
         num1= random.randint(0, nensayos-1);
         if aux1[num1] < 1:
             aux1[num1]=1
-            SECR[x]=num1
+            secr[x]=num1
             cont+=1
 cont=0
 #genera serie experimental ([direc][veloc][durac])*10 repes
 for x in range(len(valv_l)):
     for r in range(repes): #repeticiones             
-        SECEX[cont].append(valv_l[x])
+        secex[cont].append(valv_l[x])
         cont+=1
 #aleatoriza serie experimental
 for x in range(nensayos):
-    SECEXR[x]=SECEX[SECR[x]]   
+    secexr[x]=secex[secr[x]]   
 
-contae=-1
 
 
 #=====================SEQ PRESENTACIÓ IMATGES ANIMALS==========================
@@ -105,11 +105,18 @@ dict_imatges ={
     'image_fin' : pyglet.resource.image('imatges_manel_finals/others/img_fin.jpg')
     }
 
-   
-#==========================EVENTS PYGLET=======================================        
-imatge_presentada = 0
-contador = 0
-contador2 = 0
+#=============================== Flags ========================================  
+
+      
+
+
+inici_exp = 0
+final_exp = 0 
+contador_seq = 0 
+dt2 = 0
+
+#========================== Crea Log File =====================================  
+
 sujeto=input("Introduce Id sujeto: ")
 fecha=time.strftime("%d_%m_%y_")
 hora=time.strftime("%H%M") 
@@ -117,85 +124,99 @@ fileName = sujeto + fecha+hora
 dataFile = open(fileName+'.csv', 'w')  
 dataFile.write('trial, est, resp\n')
 dataFile.close()
-@window.event
-def on_draw():
-    window.clear()
-    global contae
-    if imatge_presentada == 0:
-        dict_imatges['image_inst'].blit(0, 0)
-   
-    elif imatge_presentada == 1:
-        dict_imatges['image_ini'].blit(0, 0)
-    elif imatge_presentada == 2:
-       dict_imatges['image_void'] .blit(0, 0)
-        
-#imatge expe
-    elif  imatge_presentada == 3 and contae < nensayos-1:
-        contae += 1
-        if SECEXR[contae][0] == 'a':
-            dict_imatges['valvula1'] .blit(0, 0)
-        elif SECEXR[contae][0]  == 'b':
-             dict_imatges['valvula2'].blit(0, 0)
-        elif SECEXR[contae][0]  == 'c':
-           dict_imatges['valvula3'].blit(0, 0)
-        elif SECEXR[contae][0]  == 'd':
-            dict_imatges['valvula4'].blit(0, 0)
-        elif SECEXR[contae][0]  == 'e':
-            print('CLAC CLAC, el soroll de la valvula està passant')
-    elif imatge_presentada == 3 and contae == nensayos-1:
-        dict_imatges['image_fin'].blit(0, 0)   
-        
-    elif  imatge_presentada == 4:
-       dict_imatges['image_valora'].blit(0, 0)
-                
-@window.event
-def on_key_press(symbol, modifiers):
-        global imatge_presentada
-        global contador2, tecla
-        if symbol == key.SPACE and imatge_presentada == 0:
-                imatge_presentada = 1
-        elif symbol == key.SPACE and imatge_presentada == 1:
-            imatge_presentada = 2 
-        elif symbol == key.SPACE and imatge_presentada == 2:
-            imatge_presentada = 3
-        elif symbol == key.SPACE and imatge_presentada == 3:
-            imatge_presentada = 4  
-        elif imatge_presentada == 4:
-            if symbol == key.NUM_1:
-                #resp_suje[contador2] = 1
-                tecla = 1
-                dataFile = open(fileName+'.csv', 'a')  
-                dataFile.write(str(contae)+', '+str(SECEXR[contae])+', '+str(tecla)+', '+'\n')#guarda datos ensayo
-                dataFile.close()
-                imatge_presentada = 2
-            elif symbol == key.NUM_2:
-                 #resp_suje[contador2] = 2
-                 tecla = 2
-                 dataFile = open(fileName+'.csv', 'a')  
-                 dataFile.write(str(contae)+', '+str(SECEXR[contae])+', '+str(tecla)+', '+'\n')#guarda datos ensayo
-                 dataFile.close()
-                 imatge_presentada = 2
-            elif symbol == key.NUM_3:  
-                  #resp_suje[contador2] = 3
-                tecla = 3
-                dataFile = open(fileName+'.csv', 'a')  
-                dataFile.write(str(contae)+', '+str(SECEXR[contae])+', '+str(tecla)+', '+'\n')#guarda datos ensayo
-                dataFile.close()
-                imatge_presentada = 2
-            # contador2 +=1
-            # d = [seq_expe, resp_suje]
-            # export_data = zip_longest(*d, fillvalue = '')
-            # with open('resultats.csv', 'w', encoding="ISO-8859-1", newline='') as myfile:
-            #     wr = csv.writer(myfile)
-            #     wr.writerow(("seq_expe", "resp_suje"))
-            #     wr.writerows(export_data)
-            #     myfile.close()
-            
+
+
+#==============================================================================
+#==========================EVENTS PYGLET=======================================  
+#==============================================================================
+
+def update(dt):
+    global dt2
+    dt2=dt2+dt
+
+
+pyglet.clock.schedule_interval(update, 1/60.0)            
 pyglet.app.run()
 
 
 
+#==============================================================================
+#=========================== CODI ANTIC =======================================  
+#==============================================================================
 
-
+# @window.event
+# def on_draw():
+#     window.clear()
+#     global contae
     
+#     if imatge_presentada == 0:
+#         dict_imatges['image_inst'].blit(0, 0)
+#     elif imatge_presentada == 1:
+#         dict_imatges['image_ini'].blit(0, 0)
+#     elif imatge_presentada == 2:
+#        dict_imatges['image_fix'] .blit(0, 0)
+        
+# #imatge expe
+#     elif  imatge_presentada == 3 and contae < nensayos-1:
+#         contae += 1
+#         if SECEXR[contae][0] == 'a':
+#             dict_imatges['valvula1'] .blit(0, 0)
+#         elif SECEXR[contae][0]  == 'b':
+#              dict_imatges['valvula2'].blit(0, 0)
+#         elif SECEXR[contae][0]  == 'c':
+#            dict_imatges['valvula3'].blit(0, 0)
+#         elif SECEXR[contae][0]  == 'd':
+#             dict_imatges['valvula4'].blit(0, 0)
+#         elif SECEXR[contae][0]  == 'e':
+#             print('CLAC CLAC, el soroll de la valvula està passant')
+#     elif imatge_presentada == 3 and contae == nensayos-1:
+#         dict_imatges['image_fin'].blit(0, 0)   
+        
+#     elif  imatge_presentada == 4:
+#        dict_imatges['image_valora'].blit(0, 0)
+                
+# @window.event
+# def on_key_press(symbol, modifiers):
+#         global imatge_presentada
+#         global contador2, tecla
+#         if symbol == key.SPACE and imatge_presentada == 0:
+#                 imatge_presentada = 1
+#         elif symbol == key.SPACE and imatge_presentada == 1:
+#             imatge_presentada = 2 
+#         elif symbol == key.SPACE and imatge_presentada == 2:
+#             imatge_presentada = 3
+#         elif symbol == key.SPACE and imatge_presentada == 3:
+#             imatge_presentada = 4  
+#         elif imatge_presentada == 4:
+#             if symbol == key.NUM_1:
+#                 #resp_suje[contador2] = 1
+#                 tecla = 1
+#                 dataFile = open(fileName+'.csv', 'a')  
+#                 dataFile.write(str(contae)+', '+str(SECEXR[contae])+', '+str(tecla)+', '+'\n')#guarda datos ensayo
+#                 dataFile.close()
+#                 imatge_presentada = 2
+#             elif symbol == key.NUM_2:
+#                  #resp_suje[contador2] = 2
+#                  tecla = 2
+#                  dataFile = open(fileName+'.csv', 'a')  
+#                  dataFile.write(str(contae)+', '+str(SECEXR[contae])+', '+str(tecla)+', '+'\n')#guarda datos ensayo
+#                  dataFile.close()
+#                  imatge_presentada = 2
+#             elif symbol == key.NUM_3:  
+#                   #resp_suje[contador2] = 3
+#                 tecla = 3
+#                 dataFile = open(fileName+'.csv', 'a')  
+#                 dataFile.write(str(contae)+', '+str(SECEXR[contae])+', '+str(tecla)+', '+'\n')#guarda datos ensayo
+#                 dataFile.close()
+#                 imatge_presentada = 2
+#             # contador2 +=1
+#             # d = [seq_expe, resp_suje]
+#             # export_data = zip_longest(*d, fillvalue = '')
+#             # with open('resultats.csv', 'w', encoding="ISO-8859-1", newline='') as myfile:
+#             #     wr = csv.writer(myfile)
+#             #     wr.writerow(("seq_expe", "resp_suje"))
+#             #     wr.writerows(export_data)
+#             #     myfile.close()
+            
+# pyglet.app.run()   
     
