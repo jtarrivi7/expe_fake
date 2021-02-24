@@ -110,20 +110,20 @@ dict_imatges ={
       
 
 
-inici_exp = 0
+inici_exp = -1
 final_exp = 0 
 contador_seq = 0 
 dt2 = 0
 
 #========================== Crea Log File =====================================  
 
-sujeto=input("Introduce Id sujeto: ")
-fecha=time.strftime("%d_%m_%y_")
-hora=time.strftime("%H%M") 
-fileName = sujeto + fecha+hora 
-dataFile = open(fileName+'.csv', 'w')  
-dataFile.write('trial, est, resp\n')
-dataFile.close()
+# sujeto=input("Introduce Id sujeto: ")
+# fecha=time.strftime("%d_%m_%y_")
+# hora=time.strftime("%H%M") 
+# fileName = sujeto + fecha+hora 
+# dataFile = open(fileName+'.csv', 'w')  
+# dataFile.write('trial, est, resp\n')
+# dataFile.close()
 
 
 #==============================================================================
@@ -133,6 +133,39 @@ dataFile.close()
 def update(dt):
     global dt2
     dt2=dt2+dt
+
+@window.event
+def on_draw():
+    window.clear()
+    global inici_exp
+    
+    if inici_exp == -1:
+        dict_imatges['image_inst'].blit(0, 0)
+    elif inici_exp == 0:
+        dict_imatges['image_ini'].blit(0, 0)    
+    elif inici_exp == 1:
+        dict_imatges['image_fix'].blit(0, 0)      
+        
+    # elif inici_exp == 1 and contador_seq <= nensayos-1:
+    #      if dt2 <= 5:   
+    #         if secexr[contador_seq][0] == 1:
+    #             dict_imatges['estímul1'].blit(0, 0)
+    #         elif secexr[contador_seq][0]  == 2:
+    #             dict_imatges['estímul2'].blit(0, 0)
+    #      else:
+    #         contador_seq +=1
+    #         dt2 = 0
+    # else:
+    #     dict_imatges['image_fin'].blit(0, 0)
+
+@window.event
+def on_key_press(symbol, modifiers):
+    global inici_exp
+    if symbol == key.SPACE and inici_exp == -1:
+        inici_exp = 0
+    elif symbol == key.SPACE and inici_exp == 0:
+        inici_exp = 1
+
 
 
 pyglet.clock.schedule_interval(update, 1/60.0)            
