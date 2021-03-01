@@ -20,8 +20,8 @@ os.chdir('D:/Escritorio/phd/codi_experiments/expe_fake_pyglet') #directori on te
 
 #==========================SEQ PRESENTACIÓ OLORS===============================
 
-nensayos=12  #40 ensayos x 3 valvulas 120
-repes=4
+nensayos=6  #40 ensayos x 3 valvulas 120
+repes=2
 valvulas=3
 valv_l=['a','b','c']#nombres valvulas
 
@@ -118,7 +118,7 @@ final_exp = 0
 contador_seq = 0 
 contador_ani = 0 
 contador_obj = 0 
-
+accepta_resposta = 0
 dt2 = 0
 
 #========================== Crea Log File =====================================  
@@ -143,12 +143,14 @@ def update(dt):
 @window.event
 def on_draw():
     window.clear()
-    global inici_exp, dt2
+    global inici_exp, dt2, accepta_resposta
     
     if inici_exp == -1:
         dict_imatges['image_inst'].blit(0, 0)
     elif inici_exp == 0:
         dict_imatges['image_ini'].blit(0, 0)
+    elif inici_exp == 2:
+        dict_imatges['image_fin'].blit(0, 0)
     elif inici_exp == 1:
         if dt2 < 4:
             dict_imatges['image_fix'].blit(0, 0)         
@@ -159,6 +161,7 @@ def on_draw():
                 dict_imatges['image_neut'].blit(0, 0)    
             elif secexr[contador_seq][0]== 'c':
                 dict_imatges['image_neg'].blit(0, 0)
+                
         elif dt2 > 8 and dt2 < 10:
             if secexr[contador_seq][0] == 'a':
                 Nimage= 'imatges_manel_finals/objectes/OB'+str(seq_obj[contador_obj])+'_720.jpg'
@@ -173,28 +176,54 @@ def on_draw():
                 image = pyglet.resource.image(Nimage)
                 image.blit(0, 0)
 
-                
-    # elif inici_exp == 1 and contador_seq <= nensayos-1:
-    #      if dt2 <= 5:   
-    #         if secexr[contador_seq][0] == 1:
-    #             dict_imatges['estímul1'].blit(0, 0)
-    #         elif secexr[contador_seq][0]  == 2:
-    #             dict_imatges['estímul2'].blit(0, 0)
-    #      else:
-    #         contador_seq +=1
-    #         dt2 = 0
-    # else:
-    #     dict_imatges['image_fin'].blit(0, 0)
+        elif  dt2 > 10:       
+            dict_imatges['image_valora'].blit(0, 0)
+            accepta_resposta = 1
 
 @window.event
 def on_key_press(symbol, modifiers):
-    global inici_exp, dt2
+    global inici_exp, dt2, contador_seq,contador_obj,contador_ani,accepta_resposta
     if symbol == key.SPACE and inici_exp == -1:
         inici_exp = 0
     elif symbol == key.SPACE and inici_exp == 0:
         inici_exp = 1
         dt2 = 0
-
+    elif accepta_resposta == 1:
+        if symbol == key.NUM_1:
+             if secexr[contador_seq][0] == 'a':
+                 contador_obj +=1
+             elif secexr[contador_seq][0] == 'c':
+                 contador_ani +=1   
+             if contador_seq < len(secexr)-1:
+                 contador_seq +=1
+                 accepta_resposta = 0
+                 dt2 = 0  
+             else:
+                inici_exp = 2
+                
+        if symbol == key.NUM_2:
+             if secexr[contador_seq][0] == 'a':
+                 contador_obj +=1
+             elif secexr[contador_seq][0] == 'c':
+                 contador_ani +=1   
+             if contador_seq < len(secexr)-1:
+                 contador_seq +=1
+                 accepta_resposta = 0
+                 dt2 = 0  
+             else:
+                inici_exp = 2 
+                
+        if symbol == key.NUM_3:
+             if secexr[contador_seq][0] == 'a':
+                 contador_obj +=1
+             elif secexr[contador_seq][0] == 'c':
+                 contador_ani +=1   
+             if contador_seq < len(secexr)-1:
+                 contador_seq +=1
+                 accepta_resposta = 0
+                 dt2 = 0  
+             else:
+                inici_exp = 2  
 
 pyglet.clock.schedule_interval(update, 1/60.0)            
 pyglet.app.run()
