@@ -78,7 +78,7 @@ def seq_generator(nensayos):
 def fix_seq(seq):
     for i in range(len(seq)):
         seq[i] += 1
-        return seq
+    return seq
         
 seq_animals = seq_generator(repes)
 seq_animals = fix_seq(seq_animals)
@@ -116,6 +116,9 @@ dict_imatges ={
 inici_exp = -1
 final_exp = 0 
 contador_seq = 0 
+contador_ani = 0 
+contador_obj = 0 
+
 dt2 = 0
 
 #========================== Crea Log File =====================================  
@@ -158,11 +161,18 @@ def on_draw():
                 dict_imatges['image_neg'].blit(0, 0)
         elif dt2 > 8 and dt2 < 10:
             if secexr[contador_seq][0] == 'a':
-                dict_imatges['image_pos'].blit(0, 0)      
+                Nimage= 'imatges_manel_finals/objectes/OB'+str(seq_obj[contador_obj])+'_720.jpg'
+                image = pyglet.resource.image(Nimage)
+                image.blit(0, 0)
+                             
             elif secexr[contador_seq][0] == 'b':
-                dict_imatges['image_neut'].blit(0, 0)    
+                dict_imatges['image_fix'].blit(0, 0)  
+                
             elif secexr[contador_seq][0]== 'c':
-                dict_imatges['image_neg'].blit(0, 0)
+                Nimage= 'imatges_manel_finals/animals/AN'+str(seq_obj[contador_ani])+'_720.jpg'
+                image = pyglet.resource.image(Nimage)
+                image.blit(0, 0)
+
                 
     # elif inici_exp == 1 and contador_seq <= nensayos-1:
     #      if dt2 <= 5:   
