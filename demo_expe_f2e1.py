@@ -100,7 +100,9 @@ dict_imatges ={
     'image_inst': pyglet.resource.image('imatges_manel_finals/others/inst.jpg'),
     'image_fix': pyglet.resource.image('imatges_manel_finals/others/p_fijac.jpg'),
     'image_valora' : pyglet.resource.image('imatges_manel_finals/others/valora.jpg'),
-    'image_void' : pyglet.resource.image('imatges_manel_finals/others/void.jpg'),
+    'image_pos' : pyglet.resource.image('imatges_manel_finals/others/positiu.jpg'),
+    'image_neut' : pyglet.resource.image('imatges_manel_finals/others/neutre.jpg'),
+    'image_neg' : pyglet.resource.image('imatges_manel_finals/others/negatiu.jpg'),
     'image_blink' : pyglet.resource.image('imatges_manel_finals/others/blink.jpg'),
     'image_fin' : pyglet.resource.image('imatges_manel_finals/others/img_fin.jpg')
     }
@@ -122,7 +124,7 @@ dt2 = 0
 # hora=time.strftime("%H%M") 
 # fileName = sujeto + fecha+hora 
 # dataFile = open(fileName+'.csv', 'w')  
-# dataFile.write('trial, est, resp\n')
+# dataFile.write('trial
 # dataFile.close()
 
 
@@ -146,10 +148,13 @@ def on_draw():
     elif inici_exp == 1:
         if dt2 < 4:
             dict_imatges['image_fix'].blit(0, 0)         
-        elif dt2 >= 4:
-            dict_imatges['image_void'].blit(0, 0)      
-            
-        
+        elif dt2 > 4 and dt2 < 8:
+            if secexr[contador_seq][0] == 'a':
+                dict_imatges['image_pos'].blit(0, 0)      
+            elif secexr[contador_seq][0] == 'b':
+                dict_imatges['image_neut'].blit(0, 0)    
+            elif secexr[contador_seq][0]== 'c':
+                dict_imatges['image_neg'].blit(0, 0)    
     # elif inici_exp == 1 and contador_seq <= nensayos-1:
     #      if dt2 <= 5:   
     #         if secexr[contador_seq][0] == 1:
