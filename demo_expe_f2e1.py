@@ -78,6 +78,7 @@ def seq_generator(nensayos):
 def fix_seq(seq):
     for i in range(len(seq)):
         seq[i] += 1
+        return seq
         
 seq_animals = seq_generator(repes)
 seq_animals = fix_seq(seq_animals)
@@ -154,7 +155,15 @@ def on_draw():
             elif secexr[contador_seq][0] == 'b':
                 dict_imatges['image_neut'].blit(0, 0)    
             elif secexr[contador_seq][0]== 'c':
-                dict_imatges['image_neg'].blit(0, 0)    
+                dict_imatges['image_neg'].blit(0, 0)
+        elif dt2 > 8 and dt2 < 10:
+            if secexr[contador_seq][0] == 'a':
+                dict_imatges['image_pos'].blit(0, 0)      
+            elif secexr[contador_seq][0] == 'b':
+                dict_imatges['image_neut'].blit(0, 0)    
+            elif secexr[contador_seq][0]== 'c':
+                dict_imatges['image_neg'].blit(0, 0)
+                
     # elif inici_exp == 1 and contador_seq <= nensayos-1:
     #      if dt2 <= 5:   
     #         if secexr[contador_seq][0] == 1:
