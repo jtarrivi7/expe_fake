@@ -95,7 +95,12 @@ seq_obj = fix_seq(seq_obj)
 #==============================================================================
 #===================GENERO WINDOW I CARREGO IMATGES============================
 #==============================================================================
+#Parametres per la window
 background_color = (.5, .5, .5, 1)
+width= 800
+height= 800
+
+
 window = pyglet.window.Window(1920, 1080)
 
 # define color de fondo
@@ -153,38 +158,49 @@ def on_draw():
     global inici_exp, dt2, accepta_resposta
     
     if inici_exp == -1:
-        dict_imatges['image_inst'].blit(0, 0)
+        dict_imatges['image_inst'].blit((window.width/2)-width/2, (window.height/2)-height/2, width
+                   =800, height=800)
     elif inici_exp == 0:
-        dict_imatges['image_ini'].blit(0, 0)
+        dict_imatges['image_ini'].blit((window.width/2)-width/2, (window.height/2)-height/2, width
+                   =800, height=800)
     elif inici_exp == 2:
-        dict_imatges['image_fin'].blit(0, 0)
+        dict_imatges['image_fin'].blit((window.width/2)-width/2, (window.height/2)-height/2, width
+                   =800, height=800)
     elif inici_exp == 1:
         if dt2 < 4:
-            dict_imatges['image_fix'].blit(0, 0)         
+            dict_imatges['image_fix'].blit((window.width/2)-width/2, (window.height/2)-height/2, width
+                   =800, height=800)       
         elif dt2 > 4 and dt2 < 8:
             if secexr[contador_seq][0] == 'a':
-                dict_imatges['image_pos'].blit(0, 0)      
+                dict_imatges['image_pos'].blit((window.width/2)-width/2, (window.height/2)-height/2, width
+                   =800, height=800)     
             elif secexr[contador_seq][0] == 'b':
-                dict_imatges['image_neut'].blit(0, 0)    
+                dict_imatges['image_neut'].blit((window.width/2)-width/2, (window.height/2)-height/2, width
+                   =800, height=800)   
             elif secexr[contador_seq][0]== 'c':
-                dict_imatges['image_neg'].blit(0, 0)
+                dict_imatges['image_neg'].blit((window.width/2)-width/2, (window.height/2)-height/2, width
+                   =800, height=800)
                 
         elif dt2 > 8 and dt2 < 10:
             if secexr[contador_seq][0] == 'a':
                 Nimage= 'imatges_manel_finals/objectes/OB'+str(seq_obj[contador_obj])+'_720.jpg'
                 image = pyglet.resource.image(Nimage)
-                image.blit(0, 0)
+                image.blit((window.width/2)-width/2, (window.height/2)-height/2, width
+                   =800, height=800)
                              
             elif secexr[contador_seq][0] == 'b':
-                dict_imatges['image_fix'].blit(0, 0)  
+                dict_imatges['image_fix'].blit((window.width/2)-width/2, (window.height/2)-height/2, width
+                   =800, height=800)
                 
             elif secexr[contador_seq][0]== 'c':
                 Nimage= 'imatges_manel_finals/animals/AN'+str(seq_obj[contador_ani])+'_720.jpg'
                 image = pyglet.resource.image(Nimage)
-                image.blit(0, 0)
+                image.blit((window.width/2)-width/2, (window.height/2)-height/2, width
+                   =800, height=800)
 
         elif  dt2 > 10:       
-            dict_imatges['image_valora'].blit(0, 0)
+            dict_imatges['image_valora'].blit((window.width/2)-width/2, (window.height/2)-height/2, width
+                   =800, height=800)
             accepta_resposta = 1
 
 @window.event
