@@ -94,7 +94,7 @@ seq_obj = fix_seq(seq_obj)
 #==============================================================================
 #===================GENERO WINDOW I CARREGO IMATGES============================
 #==============================================================================
-window = pyglet.window.Window(720, 700)
+window = pyglet.window.Window(1920, 1080)
 
 dict_imatges ={
     'image_ini' : pyglet.resource.image('imatges_manel_finals/others/img_ini.jpg'), 
