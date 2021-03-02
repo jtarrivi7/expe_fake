@@ -42,7 +42,7 @@ for x in range(nensayos):
             secr[x]=num1
             cont+=1
 cont=0
-#genera serie experimental ([direc][veloc][durac])*10 repes
+#genera serie experimental 
 for x in range(len(valv_l)):
     for r in range(repes): #repeticiones             
         secex[cont].append(valv_l[x])
@@ -112,7 +112,7 @@ dict_imatges ={
     'image_ini' : pyglet.resource.image('imatges_manel_finals/others/img_ini.jpg'), 
     'image_inst': pyglet.resource.image('imatges_manel_finals/others/inst.jpg'),
     'image_fix': pyglet.resource.image('imatges_manel_finals/others/p_fijac.jpg'),
-    'image_valora' : pyglet.resource.image('imatges_manel_finals/others/valora.jpg'),
+    'image_valora' : pyglet.resource.image('imatges_manel_finals/others/valora_7.jpg'),
     'image_pos' : pyglet.resource.image('imatges_manel_finals/others/positiu.jpg'),
     'image_neut' : pyglet.resource.image('imatges_manel_finals/others/neutre.jpg'),
     'image_neg' : pyglet.resource.image('imatges_manel_finals/others/negatiu.jpg'),
@@ -126,7 +126,6 @@ dict_imatges ={
 
 
 inici_exp = -1
-final_exp = 0 
 contador_seq = 0 
 contador_ani = 0 
 contador_obj = 0 
@@ -202,6 +201,20 @@ def on_draw():
             dict_imatges['image_valora'].blit((window.width/2)-width/2, (window.height/2)-height/2, width
                    =800, height=800)
             accepta_resposta = 1
+            
+def press_button():
+    global inici_exp, dt2, contador_seq,contador_obj,contador_ani,accepta_resposta,secexr
+    if secexr[contador_seq][0] == 'a':
+                 contador_obj +=1
+    elif secexr[contador_seq][0] == 'c':
+        contador_ani +=1   
+    if contador_seq < len(secexr)-1:
+        contador_seq +=1
+        accepta_resposta = 0
+        dt2 = 0  
+    else:
+       inici_exp = 2
+     
 
 @window.event
 def on_key_press(symbol, modifiers):
@@ -212,42 +225,21 @@ def on_key_press(symbol, modifiers):
         inici_exp = 1
         dt2 = 0
     elif accepta_resposta == 1:
-        if symbol == key.NUM_1:
-             if secexr[contador_seq][0] == 'a':
-                 contador_obj +=1
-             elif secexr[contador_seq][0] == 'c':
-                 contador_ani +=1   
-             if contador_seq < len(secexr)-1:
-                 contador_seq +=1
-                 accepta_resposta = 0
-                 dt2 = 0  
-             else:
-                inici_exp = 2
-                
-        if symbol == key.NUM_2:
-             if secexr[contador_seq][0] == 'a':
-                 contador_obj +=1
-             elif secexr[contador_seq][0] == 'c':
-                 contador_ani +=1   
-             if contador_seq < len(secexr)-1:
-                 contador_seq +=1
-                 accepta_resposta = 0
-                 dt2 = 0  
-             else:
-                inici_exp = 2 
-                
-        if symbol == key.NUM_3:
-             if secexr[contador_seq][0] == 'a':
-                 contador_obj +=1
-             elif secexr[contador_seq][0] == 'c':
-                 contador_ani +=1   
-             if contador_seq < len(secexr)-1:
-                 contador_seq +=1
-                 accepta_resposta = 0
-                 dt2 = 0  
-             else:
-                inici_exp = 2  
-
+        if symbol == key._1:
+            press_button()   
+        if symbol == key._2:
+            press_button()    
+        if symbol == key._3:
+            press_button() 
+        if symbol == key._4:
+            press_button()
+        if symbol == key._5:
+            press_button()
+        if symbol == key._6:
+            press_button()
+        if symbol == key._7:
+            press_button()
+            
 pyglet.clock.schedule_interval(update, 1/60.0)            
 pyglet.app.run()
 
