@@ -8,6 +8,7 @@ Created on Mon Sep 14 09:52:44 2020
 #==========================CARREGO LLIBRERIES==================================
 import pyglet
 from pyglet.window import key
+from pyglet.gl import gl  #funciones OpenGL
 import random
 import os
 import time
@@ -94,7 +95,13 @@ seq_obj = fix_seq(seq_obj)
 #==============================================================================
 #===================GENERO WINDOW I CARREGO IMATGES============================
 #==============================================================================
+background_color = (.5, .5, .5, 1)
 window = pyglet.window.Window(1920, 1080)
+
+# define color de fondo
+
+gl.glClearColor(*background_color)
+
 
 dict_imatges ={
     'image_ini' : pyglet.resource.image('imatges_manel_finals/others/img_ini.jpg'), 
