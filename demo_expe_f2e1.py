@@ -90,6 +90,15 @@ seq_obj = seq_generator(repes)
 seq_obj = fix_seq(seq_obj)
 
 
+#========================== Crea Log File =====================================  
+
+sujeto=input("Introduce Id sujeto: ")
+fecha=time.strftime("_%d_%m_%y_")
+hora=time.strftime("%H_%M") 
+fileName = sujeto + fecha+hora 
+dataFile = open(fileName+'.csv', 'w')  
+dataFile.write('trial,temps,olor,Imatge,Resposta\n')
+dataFile.close()
 
 
 #==============================================================================
@@ -132,14 +141,6 @@ contador_obj = 0
 accepta_resposta = 0
 dt2 = 0
 
-#========================== Crea Log File =====================================  
-
-sujeto=input("Introduce Id sujeto: ")
-fecha=time.strftime("_%d_%m_%y_")
-hora=time.strftime("%H_%M") 
-fileName = sujeto + fecha+hora 
-dataFile = open(fileName+'.csv', 'w')  
-dataFile.close()
 
 
 #==============================================================================
