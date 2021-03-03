@@ -204,10 +204,10 @@ def on_draw():
             
 
      
-def press_button():
+def press_button(resp):
     global inici_exp, dt2, contador_seq,contador_obj,contador_ani,accepta_resposta,secexr,Nimage
     dataFile = open(fileName+'.csv', 'a')  
-    dataFile.write('resposta,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq][0]) +', '+Nimage+'\n')#guarda datos ensayo
+    dataFile.write('resposta,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq][0]) +', '+Nimage+', '+str(resp)+'\n')#guarda datos ensayo
     dataFile.close()
     
     if secexr[contador_seq][0] == 'a':
@@ -233,19 +233,19 @@ def on_key_press(symbol, modifiers):
         dt2 = 0
     elif accepta_resposta == 1:
         if symbol == key._1:
-            press_button()   
+            press_button(1)   
         if symbol == key._2:
-            press_button()    
+            press_button(2)    
         if symbol == key._3:
-            press_button() 
+            press_button(3) 
         if symbol == key._4:
-            press_button()
+            press_button(4)
         if symbol == key._5:
-            press_button()
+            press_button(5)
         if symbol == key._6:
-            press_button()
+            press_button(6)
         if symbol == key._7:
-            press_button()
+            press_button(7)
             
 pyglet.clock.schedule_interval(update, 1/60.0)            
 pyglet.app.run()
