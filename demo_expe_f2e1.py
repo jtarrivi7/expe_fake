@@ -154,7 +154,7 @@ def update(dt):
 @window.event
 def on_draw():
     window.clear()
-    global inici_exp, dt2, accepta_resposta, Nimage
+    global inici_exp, dt2, accepta_resposta, Nimage, int_olor_log
     
     if inici_exp == -1:
         dict_imatges['image_inst'].blit((window.width/2)-width/2, (window.height/2)-height/2, width
@@ -168,8 +168,13 @@ def on_draw():
     elif inici_exp == 1:
         if dt2 < 4:
             dict_imatges['image_fix'].blit((window.width/2)-width/2, (window.height/2)-height/2, width
-                   =800, height=800)       
-        if dt2 > 4 and dt2 < 8:
+                   =800, height=800)    
+        if dt2 > 4 and dt2 < 8 and int_olor_log == False:
+            dataFile = open(fileName+'.csv', 'a')  
+            dataFile.write('Triger_Olor,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq][0])+'\n')#guarda datos ensayo
+            dataFile.close()
+            int_olor_log = True
+        if dt2 > 4 and dt2 < 8 and int_olor_log == True:
             if secexr[contador_seq][0] == 'a':
                 dict_imatges['image_pos'].blit((window.width/2)-width/2, (window.height/2)-height/2, width
                    =800, height=800)     
@@ -205,11 +210,15 @@ def on_draw():
 
      
 def press_button(resp):
-    global inici_exp, dt2, contador_seq,contador_obj,contador_ani,accepta_resposta,secexr,Nimage
-    dataFile = open(fileName+'.csv', 'a')  
-    dataFile.write('resposta,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq][0]) +', '+Nimage+', '+str(resp)+'\n')#guarda datos ensayo
-    dataFile.close()
-    
+    global inici_exp, dt2, contador_seq,contador_obj,contador_ani,accepta_resposta,secexr,Nimage,int_olor_log
+    if secexr[contador_seq][0] == 'b':
+        dataFile = open(fileName+'.csv', 'a')  
+        dataFile.write('resposta,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq][0]) +',-, '+str(resp)+'\n')#guarda datos ensayo
+        dataFile.close()
+    else:
+        dataFile = open(fileName+'.csv', 'a')  
+        dataFile.write('resposta,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq][0]) +', '+Nimage+', '+str(resp)+'\n')#guarda datos ensayo
+        dataFile.close()
     if secexr[contador_seq][0] == 'a':
                  contador_obj +=1
     elif secexr[contador_seq][0] == 'c':
@@ -217,6 +226,7 @@ def press_button(resp):
     if contador_seq < len(secexr)-1:
         contador_seq +=1
         accepta_resposta = 0
+        int_olor_log = False
         dt2 = 0  
     else:
        inici_exp = 2
