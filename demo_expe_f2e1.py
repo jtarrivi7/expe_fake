@@ -154,7 +154,7 @@ def update(dt):
 @window.event
 def on_draw():
     window.clear()
-    global inici_exp, dt2, accepta_resposta, Nimage, int_olor_log
+    global inici_exp, dt2, accepta_resposta, Nimage, int_olor_log, int_img_log
     
     if inici_exp == -1:
         dict_imatges['image_inst'].blit((window.width/2)-width/2, (window.height/2)-height/2, width
@@ -187,20 +187,32 @@ def on_draw():
                 
         elif dt2 > 8 and dt2 < 10:
             if secexr[contador_seq][0] == 'a':
-                Nimage= 'imatges_manel_finals/objectes/OB'+str(seq_obj[contador_obj])+'_720.jpg'
-                image = pyglet.resource.image(Nimage)
-                image.blit((window.width/2)-width/2, (window.height/2)-height/2, width
-                   =800, height=800)
+                if int_img_log == False:
+                    Nimage= 'imatges_manel_finals/objectes/OB'+str(seq_obj[contador_obj])+'_720.jpg'
+                    dataFile = open(fileName+'.csv', 'a')  
+                    dataFile.write('Triger_Img,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq][0])+', '+Nimage+'\n')#guarda datos ensayo
+                    dataFile.close()
+                    int_img_log = True
+                if int_img_log == True:
+                    image = pyglet.resource.image(Nimage)
+                    image.blit((window.width/2)-width/2, (window.height/2)-height/2, width
+                               =800, height=800)
                              
             elif secexr[contador_seq][0] == 'b':
                 dict_imatges['image_fix'].blit((window.width/2)-width/2, (window.height/2)-height/2, width
                    =800, height=800)
                 
             elif secexr[contador_seq][0]== 'c':
-                Nimage= 'imatges_manel_finals/animals/AN'+str(seq_obj[contador_ani])+'_720.jpg'
-                image = pyglet.resource.image(Nimage)
-                image.blit((window.width/2)-width/2, (window.height/2)-height/2, width
-                   =800, height=800)
+                if int_img_log == False:
+                    Nimage= 'imatges_manel_finals/animals/AN'+str(seq_obj[contador_ani])+'_720.jpg'
+                    dataFile = open(fileName+'.csv', 'a')  
+                    dataFile.write('Triger_Img,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq][0])+', '+Nimage+'\n')#guarda datos ensayo
+                    dataFile.close()
+                    int_img_log = True
+                if int_img_log == True:
+                    image = pyglet.resource.image(Nimage)
+                    image.blit((window.width/2)-width/2, (window.height/2)-height/2, width
+                       =800, height=800)
 
         elif  dt2 > 10:       
             dict_imatges['image_valora'].blit((window.width/2)-width/2, (window.height/2)-height/2, width
@@ -210,7 +222,7 @@ def on_draw():
 
      
 def press_button(resp):
-    global inici_exp, dt2, contador_seq,contador_obj,contador_ani,accepta_resposta,secexr,Nimage,int_olor_log
+    global inici_exp, dt2, contador_seq,contador_obj,contador_ani,accepta_resposta,secexr,Nimage,int_olor_log,int_img_log
     if secexr[contador_seq][0] == 'b':
         dataFile = open(fileName+'.csv', 'a')  
         dataFile.write('resposta,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq][0]) +',-, '+str(resp)+'\n')#guarda datos ensayo
@@ -227,6 +239,7 @@ def press_button(resp):
         contador_seq +=1
         accepta_resposta = 0
         int_olor_log = False
+        int_img_log = False
         dt2 = 0  
     else:
        inici_exp = 2
