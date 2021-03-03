@@ -97,7 +97,7 @@ fecha=time.strftime("_%d_%m_%y_")
 hora=time.strftime("%H_%M") 
 fileName = sujeto + fecha+hora 
 dataFile = open(fileName+'.csv', 'w')  
-dataFile.write('trial,temps,olor,Imatge,Resposta\n')
+dataFile.write('triger_type,time,trial,olor,Imatge,Resposta\n') #Quan faci servir el pupil labs faré servir t-pupil en comtpes del modul time
 dataFile.close()
 
 
@@ -129,7 +129,7 @@ dict_imatges ={
     'image_fin' : pyglet.resource.image('imatges_manel_finals/others/img_fin.jpg')
     }
 
-#=============================== Flags ========================================  
+#============================= INTERRUPTORS ===================================  
 
       
 
@@ -140,8 +140,8 @@ contador_ani = 0
 contador_obj = 0 
 accepta_resposta = 0
 dt2 = 0
-
-
+int_olor_log = False #interruptor per enviar dades al logfile
+int_img_log = False #interruptor per enviar dades al logfile
 
 #==============================================================================
 #==========================EVENTS PYGLET=======================================  
@@ -154,7 +154,7 @@ def update(dt):
 @window.event
 def on_draw():
     window.clear()
-    global inici_exp, dt2, accepta_resposta
+    global inici_exp, dt2, accepta_resposta, Nimage
     
     if inici_exp == -1:
         dict_imatges['image_inst'].blit((window.width/2)-width/2, (window.height/2)-height/2, width
@@ -169,7 +169,7 @@ def on_draw():
         if dt2 < 4:
             dict_imatges['image_fix'].blit((window.width/2)-width/2, (window.height/2)-height/2, width
                    =800, height=800)       
-        elif dt2 > 4 and dt2 < 8:
+        if dt2 > 4 and dt2 < 8:
             if secexr[contador_seq][0] == 'a':
                 dict_imatges['image_pos'].blit((window.width/2)-width/2, (window.height/2)-height/2, width
                    =800, height=800)     
@@ -202,8 +202,14 @@ def on_draw():
                    =800, height=800)
             accepta_resposta = 1
             
+
+     
 def press_button():
-    global inici_exp, dt2, contador_seq,contador_obj,contador_ani,accepta_resposta,secexr
+    global inici_exp, dt2, contador_seq,contador_obj,contador_ani,accepta_resposta,secexr,Nimage
+    dataFile = open(fileName+'.csv', 'a')  
+    dataFile.write('resposta,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq][0]) +', '+Nimage+'\n')#guarda datos ensayo
+    dataFile.close()
+    
     if secexr[contador_seq][0] == 'a':
                  contador_obj +=1
     elif secexr[contador_seq][0] == 'c':
@@ -214,7 +220,8 @@ def press_button():
         dt2 = 0  
     else:
        inici_exp = 2
-     
+
+
 
 @window.event
 def on_key_press(symbol, modifiers):
