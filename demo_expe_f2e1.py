@@ -134,13 +134,12 @@ dt2 = 0
 
 #========================== Crea Log File =====================================  
 
-# sujeto=input("Introduce Id sujeto: ")
-# fecha=time.strftime("%d_%m_%y_")
-# hora=time.strftime("%H%M") 
-# fileName = sujeto + fecha+hora 
-# dataFile = open(fileName+'.csv', 'w')  
-# dataFile.write('trial
-# dataFile.close()
+sujeto=input("Introduce Id sujeto: ")
+fecha=time.strftime("_%d_%m_%y_")
+hora=time.strftime("%H_%M") 
+fileName = sujeto + fecha+hora 
+dataFile = open(fileName+'.csv', 'w')  
+dataFile.close()
 
 
 #==============================================================================
