@@ -126,7 +126,8 @@ dict_imatges ={
     'image_neut' : pyglet.resource.image('imatges_manel_finals/others/neutre.jpg'),
     'image_neg' : pyglet.resource.image('imatges_manel_finals/others/negatiu.jpg'),
     'image_blink' : pyglet.resource.image('imatges_manel_finals/others/blink.jpg'),
-    'image_fin' : pyglet.resource.image('imatges_manel_finals/others/img_fin.jpg')
+    'image_fin' : pyglet.resource.image('imatges_manel_finals/others/img_fin.jpg'),
+    'image_pausa' : pyglet.resource.image('imatges_manel_finals/others/pausa.jpg')
     }
 
 #============================= INTERRUPTORS ===================================  
@@ -139,6 +140,7 @@ contador_seq = 0
 contador_ani = 0 
 contador_obj = 0 
 contador_neutre = 0 
+contador_pausa = 0
 accepta_resposta = 0
 dt2 = 0
 int_olor_log = False #interruptor per enviar dades al logfile
@@ -165,6 +167,9 @@ def on_draw():
                    =800, height=800)
     elif inici_exp == 2:
         dict_imatges['image_fin'].blit((window.width/2)-width/2, (window.height/2)-height/2, width
+                   =800, height=800)
+    elif contador_pausa == 10:
+        dict_imatges['image_pausa'].blit((window.width/2)-width/2, (window.height/2)-height/2, width
                    =800, height=800)
     elif inici_exp == 1:
         if dt2 < 4:
@@ -244,7 +249,7 @@ def on_draw():
 
      
 def press_button(resp):
-    global inici_exp, dt2, contador_seq,contador_obj,contador_ani,accepta_resposta,secexr,Nimage,int_olor_log,int_img_log,contador_neutre   
+    global inici_exp, dt2, contador_seq,contador_obj,contador_ani,accepta_resposta,secexr,Nimage,int_olor_log,int_img_log,contador_neutre,contador_pausa 
     
     dataFile = open(fileName+'.csv', 'a')  
     dataFile.write('resposta,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq][0]) +', '+Nimage+', '+str(resp)+'\n')#guarda datos ensayo
@@ -265,6 +270,7 @@ def press_button(resp):
         accepta_resposta = 0
         int_olor_log = False
         int_img_log = False
+        contador_pausa +=1
         dt2 = 0  
     else:
        inici_exp = 2
@@ -273,7 +279,7 @@ def press_button(resp):
 
 @window.event
 def on_key_press(symbol, modifiers):
-    global inici_exp, dt2, contador_seq,contador_obj,contador_ani,accepta_resposta
+    global inici_exp, dt2, contador_seq,contador_obj,contador_ani,accepta_resposta,contador_pausa
     if symbol == key.SPACE and inici_exp == -1:
         inici_exp = 0
     elif symbol == key.SPACE and inici_exp == 0:
@@ -294,6 +300,9 @@ def on_key_press(symbol, modifiers):
             press_button(6)
         if symbol == key._7:
             press_button(7)
+    elif symbol == key.C and contador_pausa == 10:
+        contador_pausa = 0
+        dt2 = 0
             
 pyglet.clock.schedule_interval(update, 1/60.0)            
 pyglet.app.run()
