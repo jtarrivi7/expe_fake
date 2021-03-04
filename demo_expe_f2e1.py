@@ -89,7 +89,10 @@ seq_animals = fix_seq(seq_animals)
 seq_obj = seq_generator(repes)
 seq_obj = fix_seq(seq_obj)
 
+#============SEQ PRESENTACIÓ IMATGES-OBJECTES X Categoria NEUTRE===============
 
+seq_neu = seq_generator(repes)
+seq_neu = fix_seq(seq_neu)
 #========================== Crea Log File =====================================  
 
 sujeto=input("Introduce Id sujeto: ")
