@@ -21,8 +21,8 @@ os.chdir('D:/Escritorio/phd/codi_experiments/expe_fake_pyglet') #directori on te
 
 #==========================SEQ PRESENTACIÓ OLORS===============================
 
-nensayos=6  #40 ensayos x 3 valvulas 120
-repes=2
+nensayos=12  #40 ensayos x 3 valvulas 120
+repes=4
 valvulas=3
 valv_l=['a','b','c']#nombres valvulas
 
@@ -81,18 +81,15 @@ def fix_seq(seq):
         seq[i] += 1
     return seq
         
-seq_animals = seq_generator(repes)
+seq_animals = seq_generator(repes + repes //2)
 seq_animals = fix_seq(seq_animals)
 
 #=====================SEQ PRESENTACIÓ IMATGES OBJECTES=========================
 
-seq_obj = seq_generator(repes)
+seq_obj = seq_generator(repes + repes //2)
 seq_obj = fix_seq(seq_obj)
 
-#============SEQ PRESENTACIÓ IMATGES-OBJECTES X Categoria NEUTRE===============
 
-seq_neu = seq_generator(repes)
-seq_neu = fix_seq(seq_neu)
 #========================== Crea Log File =====================================  
 
 sujeto=input("Introduce Id sujeto: ")
@@ -141,6 +138,7 @@ inici_exp = -1
 contador_seq = 0 
 contador_ani = 0 
 contador_obj = 0 
+contador_neutre = 0 
 accepta_resposta = 0
 dt2 = 0
 int_olor_log = False #interruptor per enviar dades al logfile
@@ -202,8 +200,29 @@ def on_draw():
                                =800, height=800)
                              
             elif secexr[contador_seq][0] == 'b':
-                dict_imatges['image_fix'].blit((window.width/2)-width/2, (window.height/2)-height/2, width
-                   =800, height=800)
+                if contador_neutre % 2 == 0:
+                    if int_img_log == False:
+                        Nimage= 'imatges_manel_finals/objectes/OB'+str(seq_obj[contador_obj])+'_720.jpg'
+                        dataFile = open(fileName+'.csv', 'a')  
+                        dataFile.write('Triger_Img,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq][0])+', '+Nimage+'\n')#guarda datos ensayo
+                        dataFile.close()
+                        int_img_log = True
+                    if int_img_log == True:
+                        image = pyglet.resource.image(Nimage)
+                        image.blit((window.width/2)-width/2, (window.height/2)-height/2, width
+                                   =800, height=800)
+                             
+                else:
+                    if int_img_log == False:
+                        Nimage= 'imatges_manel_finals/animals/AN'+str(seq_obj[contador_ani])+'_720.jpg'
+                        dataFile = open(fileName+'.csv', 'a')  
+                        dataFile.write('Triger_Img,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq][0])+', '+Nimage+'\n')#guarda datos ensayo
+                        dataFile.close()
+                        int_img_log = True
+                    if int_img_log == True:
+                        image = pyglet.resource.image(Nimage)
+                        image.blit((window.width/2)-width/2, (window.height/2)-height/2, width
+                           =800, height=800)
                 
             elif secexr[contador_seq][0]== 'c':
                 if int_img_log == False:
@@ -225,17 +244,20 @@ def on_draw():
 
      
 def press_button(resp):
-    global inici_exp, dt2, contador_seq,contador_obj,contador_ani,accepta_resposta,secexr,Nimage,int_olor_log,int_img_log
-    if secexr[contador_seq][0] == 'b':
-        dataFile = open(fileName+'.csv', 'a')  
-        dataFile.write('resposta,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq][0]) +',-, '+str(resp)+'\n')#guarda datos ensayo
-        dataFile.close()
-    else:
-        dataFile = open(fileName+'.csv', 'a')  
-        dataFile.write('resposta,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq][0]) +', '+Nimage+', '+str(resp)+'\n')#guarda datos ensayo
-        dataFile.close()
+    global inici_exp, dt2, contador_seq,contador_obj,contador_ani,accepta_resposta,secexr,Nimage,int_olor_log,int_img_log,contador_neutre   
+    
+    dataFile = open(fileName+'.csv', 'a')  
+    dataFile.write('resposta,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq][0]) +', '+Nimage+', '+str(resp)+'\n')#guarda datos ensayo
+    dataFile.close()
+    
     if secexr[contador_seq][0] == 'a':
                  contador_obj +=1
+    elif secexr[contador_seq][0] == 'b':
+        if contador_neutre % 2 == 0:
+            contador_obj +=1
+        else:
+            contador_ani +=1 
+        contador_neutre +=1
     elif secexr[contador_seq][0] == 'c':
         contador_ani +=1   
     if contador_seq < len(secexr)-1:
