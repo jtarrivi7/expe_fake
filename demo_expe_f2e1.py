@@ -21,35 +21,46 @@ os.chdir('D:/Escritorio/phd/codi_experiments/expe_fake_pyglet') #directori on te
 
 #==========================SEQ PRESENTACIÓ OLORS===============================
 
-nensayos=12  #40 ensayos x 3 valvulas 120
-repes=4
+nensayos=120  #40 ensayos x 3 valvulas 120
+repes=40
 valvulas=3
 valv_l=['a','b','c']#nombres valvulas
 
 
-secr=[0 for i in range(nensayos)] #array 1d almacena secuencia random presentacion
-secex = [[] * 3 for i in range(nensayos)] #array 2d para almacenar trials
-secexr = [[] * 3 for i in range(nensayos)] #array 2d para almacenar serie aleatoria
-aux1=[0 for i in range(nensayos)]
+def block_randomizer( inici, final):
+    
+    secr=[0 for i in range(nensayos//4)] #array 1d almacena secuencia random presentacion
+    secex = [] #array 2d para almacenar trials
+    aux=[0 for i in range(nensayos//4)]
+    secexr = [0 for i in range(nensayos//4)]
 
-## Genera serie aleatoria para presentación
-for x in range(nensayos):     
-    cont=0
-    while (cont < 1 ):
-        num1= random.randint(0, nensayos-1);
-        if aux1[num1] < 1:
-            aux1[num1]=1
-            secr[x]=num1
-            cont+=1
-cont=0
-#genera serie experimental 
-for x in range(len(valv_l)):
-    for r in range(repes): #repeticiones             
-        secex[cont].append(valv_l[x])
-        cont+=1
-#aleatoriza serie experimental
-for x in range(nensayos):
-    secexr[x]=secex[secr[x]]   
+    ## Genera serie aleatoria para presentación
+    for x in range(nensayos//4):     
+        cont=0
+        while (cont < 1 ):
+            num1= random.randint(inici, final); # 0 , nensayos//4 -1
+            if aux[num1] < 1:
+                aux[num1]=1
+                secr[x]=num1
+                cont+=1
+    
+    #genera serie experimental 
+    for x in range(len(valv_l)):
+        for r in range(repes//4): #repeticiones             
+            secex.append(valv_l[x])
+            
+    #aleatoriza serie experimental
+    for x in range(nensayos//4):
+        secexr[x]=secex[secr[x]]
+        
+    return secexr
+
+secexr1 = block_randomizer(0, nensayos//4 -1)
+secexr2 = block_randomizer(0, nensayos//4 -1)
+secexr3 = block_randomizer(0, nensayos//4 -1)
+secexr4 = block_randomizer(0, nensayos//4 -1)
+
+secexr = secexr1 +secexr2 + secexr3 + secexr4   
 
 
 
@@ -177,26 +188,26 @@ def on_draw():
                    =800, height=800)    
         if dt2 > 4 and dt2 < 8 and int_olor_log == False:
             dataFile = open(fileName+'.csv', 'a')  
-            dataFile.write('Triger_Olor,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq][0])+'\n')#guarda datos ensayo
+            dataFile.write('Triger_Olor,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq])+'\n')#guarda datos ensayo
             dataFile.close()
             int_olor_log = True
         if dt2 > 4 and dt2 < 8 and int_olor_log == True:
-            if secexr[contador_seq][0] == 'a':
+            if secexr[contador_seq] == 'a':
                 dict_imatges['image_pos'].blit((window.width/2)-width/2, (window.height/2)-height/2, width
                    =800, height=800)     
-            elif secexr[contador_seq][0] == 'b':
+            elif secexr[contador_seq] == 'b':
                 dict_imatges['image_neut'].blit((window.width/2)-width/2, (window.height/2)-height/2, width
                    =800, height=800)   
-            elif secexr[contador_seq][0]== 'c':
+            elif secexr[contador_seq]== 'c':
                 dict_imatges['image_neg'].blit((window.width/2)-width/2, (window.height/2)-height/2, width
                    =800, height=800)
                 
         elif dt2 > 8 and dt2 < 10:
-            if secexr[contador_seq][0] == 'a':
+            if secexr[contador_seq] == 'a':
                 if int_img_log == False:
                     Nimage= 'imatges_manel_finals/objectes/OB'+str(seq_obj[contador_obj])+'_720.jpg'
                     dataFile = open(fileName+'.csv', 'a')  
-                    dataFile.write('Triger_Img,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq][0])+', '+Nimage+'\n')#guarda datos ensayo
+                    dataFile.write('Triger_Img,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq])+', '+Nimage+'\n')#guarda datos ensayo
                     dataFile.close()
                     int_img_log = True
                 if int_img_log == True:
@@ -204,12 +215,12 @@ def on_draw():
                     image.blit((window.width/2)-width/2, (window.height/2)-height/2, width
                                =800, height=800)
                              
-            elif secexr[contador_seq][0] == 'b':
+            elif secexr[contador_seq] == 'b':
                 if contador_neutre % 2 == 0:
                     if int_img_log == False:
                         Nimage= 'imatges_manel_finals/objectes/OB'+str(seq_obj[contador_obj])+'_720.jpg'
                         dataFile = open(fileName+'.csv', 'a')  
-                        dataFile.write('Triger_Img,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq][0])+', '+Nimage+'\n')#guarda datos ensayo
+                        dataFile.write('Triger_Img,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq])+', '+Nimage+'\n')#guarda datos ensayo
                         dataFile.close()
                         int_img_log = True
                     if int_img_log == True:
@@ -221,7 +232,7 @@ def on_draw():
                     if int_img_log == False:
                         Nimage= 'imatges_manel_finals/animals/AN'+str(seq_obj[contador_ani])+'_720.jpg'
                         dataFile = open(fileName+'.csv', 'a')  
-                        dataFile.write('Triger_Img,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq][0])+', '+Nimage+'\n')#guarda datos ensayo
+                        dataFile.write('Triger_Img,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq])+', '+Nimage+'\n')#guarda datos ensayo
                         dataFile.close()
                         int_img_log = True
                     if int_img_log == True:
@@ -229,11 +240,11 @@ def on_draw():
                         image.blit((window.width/2)-width/2, (window.height/2)-height/2, width
                            =800, height=800)
                 
-            elif secexr[contador_seq][0]== 'c':
+            elif secexr[contador_seq]== 'c':
                 if int_img_log == False:
                     Nimage= 'imatges_manel_finals/animals/AN'+str(seq_obj[contador_ani])+'_720.jpg'
                     dataFile = open(fileName+'.csv', 'a')  
-                    dataFile.write('Triger_Img,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq][0])+', '+Nimage+'\n')#guarda datos ensayo
+                    dataFile.write('Triger_Img,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq])+', '+Nimage+'\n')#guarda datos ensayo
                     dataFile.close()
                     int_img_log = True
                 if int_img_log == True:
@@ -252,18 +263,18 @@ def press_button(resp):
     global inici_exp, dt2, contador_seq,contador_obj,contador_ani,accepta_resposta,secexr,Nimage,int_olor_log,int_img_log,contador_neutre,contador_pausa 
     
     dataFile = open(fileName+'.csv', 'a')  
-    dataFile.write('resposta,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq][0]) +', '+Nimage+', '+str(resp)+'\n')#guarda datos ensayo
+    dataFile.write('resposta,'+str(time.time())+', '+str(contador_seq)+', '+str(secexr[contador_seq]) +', '+Nimage+', '+str(resp)+'\n')#guarda datos ensayo
     dataFile.close()
     
-    if secexr[contador_seq][0] == 'a':
+    if secexr[contador_seq] == 'a':
                  contador_obj +=1
-    elif secexr[contador_seq][0] == 'b':
+    elif secexr[contador_seq] == 'b':
         if contador_neutre % 2 == 0:
             contador_obj +=1
         else:
             contador_ani +=1 
         contador_neutre +=1
-    elif secexr[contador_seq][0] == 'c':
+    elif secexr[contador_seq] == 'c':
         contador_ani +=1   
     if contador_seq < len(secexr)-1:
         contador_seq +=1
@@ -309,83 +320,3 @@ pyglet.app.run()
 
 
 
-#==============================================================================
-#=========================== CODI ANTIC =======================================  
-#==============================================================================
-
-# @window.event
-# def on_draw():
-#     window.clear()
-#     global contae
-    
-#     if imatge_presentada == 0:
-#         dict_imatges['image_inst'].blit(0, 0)
-#     elif imatge_presentada == 1:
-#         dict_imatges['image_ini'].blit(0, 0)
-#     elif imatge_presentada == 2:
-#        dict_imatges['image_fix'] .blit(0, 0)
-        
-# #imatge expe
-#     elif  imatge_presentada == 3 and contae < nensayos-1:
-#         contae += 1
-#         if SECEXR[contae][0] == 'a':
-#             dict_imatges['valvula1'] .blit(0, 0)
-#         elif SECEXR[contae][0]  == 'b':
-#              dict_imatges['valvula2'].blit(0, 0)
-#         elif SECEXR[contae][0]  == 'c':
-#            dict_imatges['valvula3'].blit(0, 0)
-#         elif SECEXR[contae][0]  == 'd':
-#             dict_imatges['valvula4'].blit(0, 0)
-#         elif SECEXR[contae][0]  == 'e':
-#             print('CLAC CLAC, el soroll de la valvula està passant')
-#     elif imatge_presentada == 3 and contae == nensayos-1:
-#         dict_imatges['image_fin'].blit(0, 0)   
-        
-#     elif  imatge_presentada == 4:
-#        dict_imatges['image_valora'].blit(0, 0)
-                
-# @window.event
-# def on_key_press(symbol, modifiers):
-#         global imatge_presentada
-#         global contador2, tecla
-#         if symbol == key.SPACE and imatge_presentada == 0:
-#                 imatge_presentada = 1
-#         elif symbol == key.SPACE and imatge_presentada == 1:
-#             imatge_presentada = 2 
-#         elif symbol == key.SPACE and imatge_presentada == 2:
-#             imatge_presentada = 3
-#         elif symbol == key.SPACE and imatge_presentada == 3:
-#             imatge_presentada = 4  
-#         elif imatge_presentada == 4:
-#             if symbol == key.NUM_1:
-#                 #resp_suje[contador2] = 1
-#                 tecla = 1
-#                 dataFile = open(fileName+'.csv', 'a')  
-#                 dataFile.write(str(contae)+', '+str(SECEXR[contae])+', '+str(tecla)+', '+'\n')#guarda datos ensayo
-#                 dataFile.close()
-#                 imatge_presentada = 2
-#             elif symbol == key.NUM_2:
-#                  #resp_suje[contador2] = 2
-#                  tecla = 2
-#                  dataFile = open(fileName+'.csv', 'a')  
-#                  dataFile.write(str(contae)+', '+str(SECEXR[contae])+', '+str(tecla)+', '+'\n')#guarda datos ensayo
-#                  dataFile.close()
-#                  imatge_presentada = 2
-#             elif symbol == key.NUM_3:  
-#                   #resp_suje[contador2] = 3
-#                 tecla = 3
-#                 dataFile = open(fileName+'.csv', 'a')  
-#                 dataFile.write(str(contae)+', '+str(SECEXR[contae])+', '+str(tecla)+', '+'\n')#guarda datos ensayo
-#                 dataFile.close()
-#                 imatge_presentada = 2
-#             # contador2 +=1
-#             # d = [seq_expe, resp_suje]
-#             # export_data = zip_longest(*d, fillvalue = '')
-#             # with open('resultats.csv', 'w', encoding="ISO-8859-1", newline='') as myfile:
-#             #     wr = csv.writer(myfile)
-#             #     wr.writerow(("seq_expe", "resp_suje"))
-#             #     wr.writerows(export_data)
-#             #     myfile.close()
-            
-# pyglet.app.run()   
-    
